@@ -79,9 +79,8 @@ function addLeadingZero(value) {
   return value.toString().padStart(2, '0');
 }
 
-
 // Для підрахунку значень використовуй готову функцію convertMs,
-//  де ms - різниця між кінцевою і поточною датою в мілісекундах.
+// ms - різниця між кінцевою і поточною датою в мілісекундах.
 function convertMs(ms) {
   const second = 1000;
   const minute = second * 60;
@@ -93,7 +92,7 @@ function convertMs(ms) {
   const minutes = Math.floor(((ms % day) % hour) / minute);
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
-  return { days, hours, minutes, seconds };
+  return {days, hours, minutes, seconds};
 }
 
 
