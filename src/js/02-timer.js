@@ -37,7 +37,7 @@ const options = {
 };
 
 // функція flatpickr(selector, options)
-const datetimePicker = flatpickr(refs.input, options);
+const datetimePicker = flatpickr("#datetime-picker", options);
 
 let timerId;
 
