@@ -1,49 +1,56 @@
-const refs =  {
-  delayInput = document.querySelector('input[name="delay"]'),
-  stepInput =document.querySelector('input[name="step"]'),
-  amountInput =document.querySelector('input[name="amount"]'),
-  submitBtn =document.querySelector('button[type="submit"]'),
-}
+import Notiflix from 'notiflix';
 
-refs.submitBtn.addEventListener('submit', createPromise);
+const refs = {
+  delayInput: document.querySelector('input[name="delay"]'),
+  stepInput: document.querySelector('input[name="step"]'),
+  amountInput: document.querySelector('input[name="amount"]'),
+  form: document.querySelector('form'),
+};
 
-// Напиши скрипт, який на момент сабміту форми викликає функцію createPromise(position, delay) 
-// стільки разів, скільки ввели в поле amount. Під час кожного виклику передай їй 
-// номер промісу (position), що створюється, і затримку, враховуючи першу затримку (delay), 
+refs.form.addEventListener('submit', generatePromises);
+
+// Напиши скрипт, який на момент сабміту форми викликає функцію createPromise(position, delay)
+// стільки разів, скільки ввели в поле amount. Під час кожного виклику передай їй
+// номер промісу (position), що створюється, і затримку, враховуючи першу затримку (delay),
 // введену користувачем, і крок (step).
 
-
-function createPromise(position, delay) {
-  const shouldResolve = Math.random() > 0.3;
-  const delay = refs.delayInput;
-  if (shouldResolve) {
-    // Fulfill
-    for (let i=0; i<=refs.amountInput; i+=1){
-      return new Promise (resolve => {
-        setTimeout(() => {
-          if ())
-      }, 
-        delay);
+function generatePromises(event) {
+  event.preventDefault();
+  let delay = parseInt(refs.delayInput.value);
+  for (let i = 1; i <= parseInt(refs.amountInput.value); i += 1) {
+    createPromise(i, delay)
+      .then(({ position, delay }) => {
+        Notiflix.Notify.success(
+          `✅ Fulfilled promise ${position} in ${delay}ms`
+        );
+      })
+      .catch(({ position, delay }) => {
+        Notiflix.Notify.failure(
+          `❌ Rejected promise ${position} in ${delay}ms`
+        );
       });
-    }
-  } else {
-    // Reject
+
+    delay += parseInt(refs.stepInput.value);
   }
 }
 
-
+function createPromise(position, delay) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const shouldResolve = Math.random() > 0.3;
+      if (shouldResolve) {
+        resolve({ position, delay });
+      } else {
+        reject({ position, delay });
+      }
+    }, delay);
+  });
+}
 
 // Доповни код функції createPromise таким чином, щоб вона повертала один проміс,
-//  який виконується або відхиляється через delay часу. 
+//  який виконується або відхиляється через delay часу.
 //  Значенням промісу повинен бути об'єкт, в якому будуть властивості position
-//   і delay зі значеннями однойменних параметрів. 
-//  Використовуй початковий код функції для вибору того, що потрібно зробити 
+//   і delay зі значеннями однойменних параметрів.
+//  Використовуй початковий код функції для вибору того, що потрібно зробити
 //  з промісом - виконати або відхилити.
 
-createPromise(2, 1500)
-  .then(({ position, delay }) => {
-    console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
-  })
-  .catch(({ position, delay }) => {
-    console.log(`❌ Rejected promise ${position} in ${delay}ms`);
-  });
