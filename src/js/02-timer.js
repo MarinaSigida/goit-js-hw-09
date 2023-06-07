@@ -4,6 +4,7 @@ import Notiflix from 'notiflix';
 
 const refs = {
   startBtn: document.querySelector('button[data-start]'),
+  resetBtn: document.querySelector('button[data-reset]'),
   input: document.querySelector('input#datetime-picker'),
   daysLeft: document.querySelector('span[data-days]'),
   hoursLeft: document.querySelector('span[data-hours]'),
@@ -15,7 +16,6 @@ const refs = {
 // з текстом "Please choose a date in the future".
 // Якщо користувач вибрав валідну дату (в майбутньому), кнопка «Start» стає активною.
 // Кнопка «Start» повинна бути неактивною доти, доки користувач не вибрав дату в майбутньому.
-
 
 const options = {
   enableTime: true,
@@ -35,18 +35,23 @@ const options = {
 };
 
 // функція flatpickr(selector, options)
-const datetimePicker=flatpickr(refs.input, options);
+const datetimePicker = flatpickr(refs.input, options);
 
 let timerId;
 
 refs.startBtn.addEventListener('click', timerOn);
+refs.resetBtn.addEventListener('click', timerReset);
 
+refs.resetBtn.setAttribute('disabled', true);
 
 
 // Натисканням на кнопку «Start» починається відлік часу до обраної дати з моменту натискання.
 // Таймер повинен зупинятися, коли дійшов до кінцевої дати, тобто 00:00:00:00.
 
 function timerOn() {
+  refs.input.setAttribute('disabled', true);
+  refs.startBtn.setAttribute('disabled', true);
+  refs.resetBtn.removeAttribute('disabled');
   timeLeftCalc();
   timerId = setInterval(() => timeLeftCalc(), 1000);
 }
@@ -90,7 +95,17 @@ function convertMs(ms) {
   const minutes = Math.floor(((ms % day) % hour) / minute);
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
-  return {days, hours, minutes, seconds};
+  return { days, hours, minutes, seconds };
 }
 
-
+// обнулює всі дані таймера і зробить інпут знову доступним для обрання дати
+function timerReset() {
+  refs.daysLeft.textContent = '00';
+  refs.hoursLeft.textContent = '00';
+  refs.minutesLeft.textContent = '00';
+  refs.secondsLeft.textContent = '00';
+  clearInterval(timerId);
+  refs.input.removeAttribute('disabled');
+  refs.startBtn.removeAttribute('disabled');
+  refs.resetBtn.setAttribute('disabled', true);
+}

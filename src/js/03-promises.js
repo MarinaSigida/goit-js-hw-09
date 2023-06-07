@@ -17,7 +17,17 @@ refs.form.addEventListener('submit', generatePromises);
 function generatePromises(event) {
   event.preventDefault();
   let delay = parseInt(refs.delayInput.value);
-  for (let i = 1; i <= parseInt(refs.amountInput.value); i += 1) {
+  let step = parseInt(refs.stepInput.value);
+  let amount = parseInt(refs.amountInput.value);
+
+  if (step < 0 || delay < 0 || amount <= 0) {
+    Notiflix.Notify.failure(
+      `❌ Please enter valid numbers`
+    );
+    return;
+  };
+
+  for (let i = 1; i <= amount; i += 1) {
     createPromise(i, delay)
       .then(({ position, delay }) => {
         Notiflix.Notify.success(
@@ -30,7 +40,7 @@ function generatePromises(event) {
         );
       });
 
-    delay += parseInt(refs.stepInput.value);
+    delay += step;
   }
 }
 
@@ -53,4 +63,3 @@ function createPromise(position, delay) {
 //   і delay зі значеннями однойменних параметрів.
 //  Використовуй початковий код функції для вибору того, що потрібно зробити
 //  з промісом - виконати або відхилити.
-
