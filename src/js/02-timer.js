@@ -16,6 +16,8 @@ const refs = {
 // з текстом "Please choose a date in the future".
 // Якщо користувач вибрав валідну дату (в майбутньому), кнопка «Start» стає активною.
 // Кнопка «Start» повинна бути неактивною доти, доки користувач не вибрав дату в майбутньому.
+refs.startBtn.setAttribute('disabled', true);
+
 
 const options = {
   enableTime: true,
@@ -43,6 +45,7 @@ refs.startBtn.addEventListener('click', timerOn);
 refs.resetBtn.addEventListener('click', timerReset);
 
 refs.resetBtn.setAttribute('disabled', true);
+
 
 
 // Натисканням на кнопку «Start» починається відлік часу до обраної дати з моменту натискання.

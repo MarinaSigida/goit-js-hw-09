@@ -16,6 +16,7 @@ refs.form.addEventListener('submit', generatePromises);
 
 function generatePromises(event) {
   event.preventDefault();
+
   let delay = parseInt(refs.delayInput.value);
   let step = parseInt(refs.stepInput.value);
   let amount = parseInt(refs.amountInput.value);
@@ -42,6 +43,7 @@ function generatePromises(event) {
 
     delay += step;
   }
+  event.currentTarget.reset();
 }
 
 function createPromise(position, delay) {
